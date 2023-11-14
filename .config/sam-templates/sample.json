@@ -1,0 +1,49 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Transform": "AWS::Serverless-2016-10-31",
+  "Description": "sample-lambda",
+  "Globals": {
+    "Function": {
+      "CodeUri": "../gen/lambda",
+      "Timeout": 30,
+      "Runtime": "nodejs18.x",
+      "MemorySize": 1024
+    }
+  },
+  "Resources": {
+    "sampleFn": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "sample.lambda",
+        "Architectures": [
+          "arm64"
+        ],
+        "FunctionUrlConfig": {
+          "AuthType": "NONE",
+          "Cors": {
+            "AllowOrigins": [
+              "*"
+            ],
+            "AllowMethods": [
+              "POST",
+              "GET"
+            ]
+          },
+          "InvokeMode": "BUFFERED"
+        }
+      },
+      "Metadata": {
+        "BuildMethod": "esbuild",
+        "BuildProperties": {
+          "Minify": true,
+          "Target": "es2022",
+          "Platform": "node",
+          "Sourcemap": true,
+          "EntryPoints": [
+            "sample.ts"
+          ]
+        }
+      }
+    }
+  }
+}
